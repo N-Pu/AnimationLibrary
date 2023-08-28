@@ -1,4 +1,4 @@
-package com.project.toko.presentation.screens.homeScreen
+package com.project.toko.presentation.screens.addOrRemoveFavorites
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -15,11 +15,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.project.toko.dao.AnimeItem
 import com.project.toko.dao.Dao
-import com.project.toko.domain.viewModel.HomeScreenViewModel
 import com.project.toko.presentation.theme.LightGreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,7 +41,7 @@ fun AddOrRemoveFavorites(
     scoredBy: String,
     animeImage: String,
     modifier: Modifier,
-    viewModel: HomeScreenViewModel,
+    viewModel: ViewModel,
     dao: Dao
 ) {
     val addCircle = Icons.Default.AddCircle
@@ -54,7 +54,6 @@ fun AddOrRemoveFavorites(
     isAnimeInDb = containsInDao
 
     BoxWithConstraints(
-        modifier = modifier
     ) {
         Column(
             horizontalAlignment = Alignment.End,
@@ -85,7 +84,8 @@ fun AddOrRemoveFavorites(
                 Icon(
                     if (isAnimeInDb) check else addCircle,
                     contentDescription = null,
-                    tint = LightGreen
+                    tint = LightGreen,
+                    modifier = modifier
                 )
             }
         }

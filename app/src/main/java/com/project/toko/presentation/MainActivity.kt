@@ -19,7 +19,6 @@ import androidx.core.view.doOnLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.project.toko.dao.Dao
 import com.project.toko.dao.MainDb
 import com.project.toko.domain.models.cache.DataCacheSingleton
 import com.project.toko.presentation.appConstraction.TokoAppActivator
@@ -30,7 +29,6 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 
-//@HiltAndroidApp
 class MainActivity : ComponentActivity() {
 
 
@@ -60,7 +58,6 @@ class MainActivity : ComponentActivity() {
                     TokoAppActivator(
                         navController = navController,
                         viewModelProvider = viewModelProvider,
-                        context = this,
                         modifier = modifier,
                         dao = dao
                     )

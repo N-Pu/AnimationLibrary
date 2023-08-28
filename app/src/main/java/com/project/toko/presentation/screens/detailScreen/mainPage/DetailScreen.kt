@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -36,10 +37,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -52,6 +51,7 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.project.toko.dao.Dao
 import com.project.toko.domain.models.newAnimeSearchModel.Data
 import com.project.toko.domain.models.newAnimeSearchModel.Genre
 import com.project.toko.presentation.animations.LoadingAnimation
@@ -59,7 +59,10 @@ import com.project.toko.presentation.screens.detailScreen.sideContent.castList.D
 import com.project.toko.presentation.screens.detailScreen.mainPage.customVisuals.DisplayCustomGenreBoxes
 import com.project.toko.presentation.screens.detailScreen.sideContent.staffList.DisplayStaff
 import com.project.toko.domain.viewModel.DetailScreenViewModel
+import com.project.toko.presentation.screens.addOrRemoveFavorites.AddOrRemoveFavorites
 import com.project.toko.presentation.screens.detailScreen.mainPage.openLink.OpenLinkButton
+import com.project.toko.presentation.screens.homeScreen.formatScore
+import com.project.toko.presentation.screens.homeScreen.formatScoredBy
 import com.project.toko.presentation.theme.LightGreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -72,7 +75,8 @@ fun ActivateDetailScreen(
     viewModelProvider: ViewModelProvider,
     navController: NavController,
     id: Int,
-    modifier: Modifier
+    modifier: Modifier,
+    dao: Dao
 ) {
     val viewModel = viewModelProvider[DetailScreenViewModel::class.java]
     val isSearching by viewModel.isSearching.collectAsStateWithLifecycle()
@@ -233,7 +237,20 @@ fun ActivateDetailScreen(
             if (detailData?.synopsis?.isNotBlank() == true) {
                 ExpandableText(text = detailData!!.synopsis, modifier)
             }
+            Row(modifier = modifier.clip(CardDefaults.shape).background(Color.Gray), verticalAlignment = Alignment.CenterVertically) {
 
+                Text(text = "Add to Favorites")
+                AddOrRemoveFavorites(
+                    mal_id = detailData?.mal_id ?: 0,
+                    anime = detailData?.title ?: "",
+                    score = formatScore(detailData?.score ?: 0.0f),
+                    scoredBy = formatScoredBy(detailData?.scored_by ?: 0.0f),
+                    animeImage = detailData?.images?.jpg?.image_url ?: "",
+                    modifier = modifier.size(40.dp),
+                    viewModel = viewModel,
+                    dao = dao
+                )
+            }
 
             ShowMoreInformation(modifier = modifier, detailData = detailData)
 
@@ -275,42 +292,12 @@ fun ActivateDetailScreen(
             }
             Spacer(modifier = Modifier.height(16.dp))
 
-
-            Text(text = "STUDIOS:")
-            detailData?.studios?.forEach {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = it.name,
-                    fontSize = 40.sp,
-                    color = Color.Blue,
-                    fontStyle = FontStyle.Italic,
-                    textDecoration = TextDecoration.Underline,
-                    modifier = Modifier.clickable {
-                        println("detail_on_producer/${it.mal_id}/${it.name}")
-                        navController.navigate(
-                            "detail_on_producer/${it.mal_id}/${it.name}"
-                        ) {
-                            launchSingleTop = true
-                        }
-                    }
-                )
-
-            }
-
-
-
-
             Spacer(modifier = Modifier.height(16.dp))
             if (detailData?.trailer?.url != null) {
                 OpenLinkButton(detailData?.trailer?.url!!)
             }
-
-//            Text(
-//                text = "trailer url =" + ( ?: "None") +
-//                        "id " + (detailData?.trailer?.youtube_id ?: "None")
-//            )
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "url :" + (detailData?.url ?: "None"))
+
             Box(modifier = modifier.size(100.dp))
 
 

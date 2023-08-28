@@ -49,10 +49,10 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.project.toko.dao.Dao
 import com.project.toko.domain.models.newAnimeSearchModel.Data
+import com.project.toko.presentation.screens.addOrRemoveFavorites.AddOrRemoveFavorites
 import com.project.toko.presentation.theme.LightGreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -298,10 +298,3 @@ fun formatScore(float: Float?): String {
     }
 }
 
-
-@Composable
-fun checkIdInDataBase(
-    dao: Dao, id: Int
-): Flow<Boolean> {
-    return dao.containsInDataBase(id)
-}

@@ -4,7 +4,6 @@ package com.project.toko.presentation.navigation
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -12,7 +11,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.project.toko.dao.Dao
-import com.project.toko.dao.MainDb
 import com.project.toko.domain.viewModel.DetailScreenViewModel
 import com.project.toko.presentation.screens.detailScreen.mainPage.ActivateDetailScreen
 import com.project.toko.presentation.screens.homeScreen.MainScreen
@@ -51,7 +49,8 @@ fun SetupNavGraph(
                 navController = navController,
                 viewModelProvider = viewModelProvider,
                 id = id,
-                modifier = modifier
+                modifier = modifier,
+                dao = dao
             )
             Log.d("CATCHED ID = ", id.toString())
         }
