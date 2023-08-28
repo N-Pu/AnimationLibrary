@@ -48,9 +48,12 @@ fun TokoAppActivator(
 ) {
 
     val currentDetailScreenId = viewModelProvider[DetailScreenViewModel::class.java].loadedId
-
-    navController.addOnDestinationChangedListener { _, _, arguments ->
-        currentDetailScreenId.value = arguments?.getInt("id") ?: 0
+    navController.addOnDestinationChangedListener { _, destination, arguments ->
+        when (destination.route) {
+            Screen.Detail.route -> {
+                currentDetailScreenId.value = arguments?.getInt("id") ?: 0
+            }
+        }
     }
 
     Scaffold(bottomBar = {
