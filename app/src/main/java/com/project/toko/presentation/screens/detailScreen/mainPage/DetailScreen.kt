@@ -59,6 +59,7 @@ import com.project.toko.presentation.screens.detailScreen.sideContent.castList.D
 import com.project.toko.presentation.screens.detailScreen.mainPage.customVisuals.DisplayCustomGenreBoxes
 import com.project.toko.presentation.screens.detailScreen.sideContent.staffList.DisplayStaff
 import com.project.toko.domain.viewModel.DetailScreenViewModel
+import com.project.toko.presentation.screens.detailScreen.mainPage.openLink.OpenLinkButton
 import com.project.toko.presentation.theme.LightGreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -300,11 +301,14 @@ fun ActivateDetailScreen(
 
 
             Spacer(modifier = Modifier.height(16.dp))
+            if (detailData?.trailer?.url != null) {
+                OpenLinkButton(detailData?.trailer?.url!!)
+            }
 
-            Text(
-                text = "trailer url =" + (detailData?.trailer?.url ?: "None") +
-                        "id " + (detailData?.trailer?.youtube_id ?: "None")
-            )
+//            Text(
+//                text = "trailer url =" + ( ?: "None") +
+//                        "id " + (detailData?.trailer?.youtube_id ?: "None")
+//            )
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "url :" + (detailData?.url ?: "None"))
             Box(modifier = modifier.size(100.dp))
