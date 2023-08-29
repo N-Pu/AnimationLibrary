@@ -6,10 +6,6 @@
 Спасибо разработчикам <a href = "https://github.com/jikan-me/jikan"><img src = "https://github-production-user-asset-6210df.s3.amazonaws.com/40484678/257327979-571f2d19-cd0e-49df-bb06-713b14e771dc.png" align="center"
 width="90" hspace="10" vspace="10"></a>
 
-## About
-
-Приложение сделано исходя из предоставленного тестового задания https://docs.google.com/document/d/1ulJ9-8XhWtZzArGrbfGiKKDBm584YqBq/edit?usp=sharing&ouid=113243301900777052749&rtpof=true&sd=true
-
 ## Screenshots
 
 <img src="https://github.com/N-Pu/AnimationLibrary/assets/40484678/608b4118-456f-4f06-a71d-7e3218e3f7ba" align="left"
