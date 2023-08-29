@@ -1,10 +1,9 @@
 package com.project.toko.domain.models.castModel
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class Data(
-    @Expose @SerializedName("character") val character: Character,
-    @Expose @SerializedName("role") val role: String,
-    @Expose @SerializedName("voice_actors") val voice_actors: List<VoiceActor>
+     @SerializedName("character") val character: Character,
+     @SerializedName("role") val role: String,
+     @SerializedName("voice_actors") val voice_actors: List<VoiceActor>
 )
