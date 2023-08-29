@@ -78,6 +78,7 @@ fun ActivateDetailScreen(
     modifier: Modifier,
     dao: Dao
 ) {
+    // Инициализация ViewModel и сбор данных
     val viewModel = viewModelProvider[DetailScreenViewModel::class.java]
     val isSearching by viewModel.isSearching.collectAsStateWithLifecycle()
 
@@ -88,6 +89,8 @@ fun ActivateDetailScreen(
     val staffData by viewModel.staffList.collectAsStateWithLifecycle()
 
 
+
+    // Загрузка данных по id при запуске
     LaunchedEffect(id) {
         viewModel.viewModelScope.launch(Dispatchers.IO) {
             viewModel.onTapAnime(id)
@@ -309,6 +312,7 @@ fun ActivateDetailScreen(
     }
 }
 
+// Вспомогательные функции для отображения деталей аниме и данных
 @Composable
 private fun ShowMoreInformation(modifier: Modifier, detailData: Data?) {
 

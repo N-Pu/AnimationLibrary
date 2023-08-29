@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.sp
 import com.project.toko.domain.models.newAnimeSearchModel.Genre
 import com.project.toko.presentation.theme.LightGreen
 
+// Вспомогательная функция для создания цветных прямоугольных блоков с текстом
 @Composable
 private fun ColorBox(
     text: String,
     modifier: Modifier
 ) {
-
     Box(
         modifier = modifier
             .background(LightGreen, shape = RoundedCornerShape(size =  14.dp) )
@@ -38,18 +38,19 @@ private fun ColorBox(
     }
 }
 
+// Функция для отображения списка жанров в виде прокручиваемых цветных блоков
 @Composable
 fun DisplayCustomGenreBoxes(genres: List<Genre>, modifier: Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
+            .horizontalScroll(rememberScrollState()) // Добавляем горизонтальную прокрутку
             .height(80.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         genres.forEachIndexed { index, genre ->
             if (index != 0) {
-                Spacer(modifier = modifier.width(8.dp))
+                Spacer(modifier = modifier.width(8.dp)) // Пробел между блоками
             }
             ColorBox(
                 text = genre.name,

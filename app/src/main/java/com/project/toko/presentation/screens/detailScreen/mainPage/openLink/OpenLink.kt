@@ -12,9 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import com.project.toko.presentation.theme.LightGreen
 
-
+// Функция для создания кнопки, позволяющей открыть внешнюю ссылку
 @Composable
 fun OpenLinkButton(link: String) {
+    // Создаем лаунчер для запуска внешних активностей
     val openLinkLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ){}
@@ -22,16 +23,19 @@ fun OpenLinkButton(link: String) {
     Column {
         Button(
             onClick = {
+                // Создаем интент для открытия ссылки
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(link)
 
                 try {
+                    // Пытаемся запустить активность для открытия ссылки
                     openLinkLauncher.launch(intent)
                 } catch (e: ActivityNotFoundException) {
                     // Обработка исключения, если нет подходящего приложения для открытия ссылки
+                    // Например, пользователь может не иметь браузера на устройстве
                 }
-            }
-            , colors = ButtonDefaults.buttonColors(containerColor = LightGreen)
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = LightGreen)
         ) {
             Text(text = "Youtube link")
         }

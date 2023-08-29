@@ -42,11 +42,12 @@ import com.project.toko.presentation.navigation.Screen
 import java.lang.Integer.min
 
 
+//функция отображает список актеров и персонажей
 @Composable
 fun DisplayCast(
-    castList: List<Data>,
-    navController: NavController,
-    modifier: Modifier
+    castList: List<Data>, // Список данных актеров и персонажей
+    navController: NavController, // Контроллер навигации
+    modifier: Modifier // Модификатор для настройки внешнего вида
 ) {
     val castWithJapVoiceActors = hasJapVoiceActor(castList)
     val numCharacterAndActors =
@@ -81,12 +82,13 @@ fun DisplayCast(
     )
 }
 
+// функция добавляет информацию о касте на экран
 @Composable
 private fun AddCast(
-    castList: List<Data>,
-    navController: NavController,
-    modifier: Modifier,
-    numCharacterAndActors: Int
+    castList: List<Data>, // Список данных актеров и персонажей
+    navController: NavController, // Контроллер навигации
+    modifier: Modifier, // Модификатор для настройки внешнего вида
+    numCharacterAndActors: Int // Количество персонажей и актеров
 ) {
     val numCards = (numCharacterAndActors + 2) / 3 // Определение количества карточек
     Row(
@@ -110,6 +112,7 @@ private fun AddCast(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+                // Цикл для отображения каждого персонажа из текущей карточки
                 for (j in startIdx until endIdx) {
                     // Выведите каждого персонажа из текущей карточки с индексом j
                     CurrentCast(
@@ -165,6 +168,7 @@ private fun AddCast(
 
 }
 
+//функция отображает информацию о текущем актере и персонаже
 @Composable
 private fun CurrentCast(
     modifier: Modifier,

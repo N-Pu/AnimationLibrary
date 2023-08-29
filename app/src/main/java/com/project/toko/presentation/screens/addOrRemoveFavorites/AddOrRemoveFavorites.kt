@@ -25,13 +25,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-// Function that starts when you click on
-// button "+" to add anime in 4 different
-// categories and shows dropDownMenu that
-// contains those categories (watching,
-// dropped, planned, watched). User can
-// tap on them and anime that was selected
-// will be send to data base and placed in
+
+// Функция для добавления или удаления
+// из локальной базы данных текущего объекта
 
 @Composable
 fun AddOrRemoveFavorites(
