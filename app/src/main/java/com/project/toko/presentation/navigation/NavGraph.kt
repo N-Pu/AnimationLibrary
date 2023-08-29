@@ -25,7 +25,6 @@ fun SetupNavGraph(
     viewModelProvider: ViewModelProvider,
     modifier: Modifier,
     dao: Dao
-
     ) {
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(route = Screen.Home.route) {
