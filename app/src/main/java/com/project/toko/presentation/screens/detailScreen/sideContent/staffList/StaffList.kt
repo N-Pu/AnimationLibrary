@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
-import com.project.toko.presentation.navigation.DetailOnStaff
 import com.project.toko.presentation.navigation.Screen
 import java.lang.Integer.min
 
@@ -93,7 +92,6 @@ private fun ListEditor(
             StaffComponentsCard(
                 data = data,
                 personPainter = personPainter,
-                navController = navController,
                 modifier = modifier
             )
         }
@@ -108,7 +106,7 @@ private fun ListEditor(
                 .height(231.dp)
                 .background(Color.White)
                 .clickable {
-                    navController.navigate(DetailOnStaff.value) {
+                    navController.navigate(Screen.DetailOnStaff.value) {
                         popUpTo(Screen.Detail.route) {
                             inclusive = true
                         }
@@ -143,7 +141,6 @@ private fun StaffComponentsCard(
     modifier: Modifier,
     data: com.project.toko.domain.models.staffModel.Data,
     personPainter: AsyncImagePainter,
-    navController: NavController
 ) {
     val positions = data.positions.joinToString(separator = ", ")
     Row(
@@ -169,14 +166,7 @@ private fun StaffComponentsCard(
                 modifier = modifier
                     .clip(RoundedCornerShape(5.dp))
                     .width(100.dp)
-                    .height(157.dp)
-                    .clickable {
-                        navController.navigate("detail_on_staff/${data.person.mal_id}") {
-                            popUpTo(Screen.Detail.route) {
-                                inclusive = true
-                            }
-                        }
-                    },
+                    .height(157.dp),
                 contentScale = ContentScale.FillBounds
             )
 

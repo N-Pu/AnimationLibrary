@@ -1,3 +1,5 @@
+package com.project.toko.repository
+
 import android.util.Log
 import com.google.gson.Gson
 import com.project.toko.domain.models.castModel.CastModel
@@ -10,8 +12,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-private const val BASE_URL = "https://api.jikan.moe/v4/anime/"
-private const val BASE_URL2 = "https://api.jikan.moe/v4/anime?"
+private const val BASE_URL = "https://api.jikan.moe/v4/anime"
 
 class MalApiService {
 
@@ -45,7 +46,7 @@ class MalApiService {
     fun getAnimeSearchByName(
         sfw: Boolean,
         page: Int = 1,
-        nameOfAnime: String,
+        query: String,
         type: String? = null,
         genres: String? = null,
         min_score: String? = null,
@@ -58,35 +59,37 @@ class MalApiService {
         val orderByParam = if (orderBy != null) "&orderBy=$orderBy" else "&orderBy=rank"
         val typeParam = if (type != null) "&type=$type" else ""
         val sortParam = if (sort != null) "&sort=$sort" else ""
-        val genresParam = if (sort != null) "&genres=$genres" else ""
+        val genresParam = if (genres != null) "&genres=$genres" else ""
         val minParam = if (min_score != null) "&minParam=$min_score" else ""
         val maxParam = if (max_score != null) "&maxParam=$max_score" else ""
         val pageParam = "&page=$page"
+        val sfwParam = "&sfw=$sfw"
+        val queryParam = "&q=$query"
 
         val urlString =
-            "$BASE_URL2&sfw=$sfw$pageParam&q=$nameOfAnime$typeParam$genresParam$minParam$maxParam$ratingParam$orderByParam$sortParam"
+            "$BASE_URL?$sfwParam$pageParam$queryParam$typeParam$genresParam$minParam$maxParam$ratingParam$orderByParam$sortParam"
 
         Log.d("getAnimeSearchByName", urlString)
         val jsonResponse = makeApiRequest(urlString)
         return gson.fromJson(jsonResponse, NewAnimeSearchModel::class.java)
     }
 
-    fun getDetailsFromAnime(id: Int): AnimeDetailModel {
-        val urlString = "$BASE_URL$id/full"
+     fun getDetailsFromAnime(id: Int): AnimeDetailModel {
+        val urlString = "$BASE_URL/$id/full"
         val jsonResponse = makeApiRequest(urlString)
         Log.d("getDetailsFromAnime", urlString)
         return gson.fromJson(jsonResponse, AnimeDetailModel::class.java)
     }
 
-    fun getCharactersFromId(id: Int): CastModel {
-        val urlString = "$BASE_URL$id/characters"
+     fun getCharactersFromId(id: Int): CastModel {
+        val urlString = "$BASE_URL/$id/characters"
         val jsonResponse = makeApiRequest(urlString)
         Log.d("getCharactersFromId", urlString)
         return gson.fromJson(jsonResponse, CastModel::class.java)
     }
 
-    fun getStaffFromId(id: Int): StaffModel {
-        val urlString = "$BASE_URL$id/staff"
+     fun getStaffFromId(id: Int): StaffModel {
+        val urlString = "$BASE_URL/$id/staff"
         val jsonResponse = makeApiRequest(urlString)
         Log.d("getStaffFromId", urlString)
         return gson.fromJson(jsonResponse, StaffModel::class.java)

@@ -38,7 +38,6 @@ import com.project.toko.domain.models.castModel.ImagesX
 import com.project.toko.domain.models.castModel.JpgX
 import com.project.toko.domain.models.castModel.Person
 import com.project.toko.domain.models.castModel.VoiceActor
-import com.project.toko.presentation.navigation.DetailOnCast
 import com.project.toko.presentation.navigation.Screen
 import java.lang.Integer.min
 
@@ -47,7 +46,6 @@ import java.lang.Integer.min
 fun DisplayCast(
     castList: List<Data>,
     navController: NavController,
-//    viewModelProvider: ViewModelProvider,
     modifier: Modifier
 ) {
     val castWithJapVoiceActors = hasJapVoiceActor(castList)
@@ -120,7 +118,6 @@ private fun AddCast(
                         personPainter = rememberAsyncImagePainter(model = castList[j].voice_actors[0].person.images.jpg.image_url),
                         voiceActor = castList[j].voice_actors[0],
                         data = castList[j],
-                        navController = navController
                     )
                 }
             }
@@ -136,12 +133,13 @@ private fun AddCast(
                 .height(460.dp)
                 .background(Color.White)
                 .clickable {
-                    navController.navigate(DetailOnCast.value) {
+                    navController.navigate(Screen.DetailOnCast.value) {
                         popUpTo(Screen.Detail.route) {
                             inclusive = true
                         }
                     }
                 },
+
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -173,22 +171,9 @@ private fun CurrentCast(
     personPainter: AsyncImagePainter,
     characterPainter: AsyncImagePainter,
     voiceActor: VoiceActor,
-    data: Data,
-    navController: NavController
+    data: Data
 ) {
 
-    val customModifier =
-        if (voiceActor.language == "") {
-            modifier
-        } else {
-            modifier.clickable {
-                navController.navigate("detail_on_staff/${voiceActor.person.mal_id}") {
-                    popUpTo(Screen.Detail.route) {
-                        inclusive = true
-                    }
-                }
-            }
-        }
 
     Row(
         modifier = modifier.height(150.dp),
@@ -202,7 +187,7 @@ private fun CurrentCast(
             Image(
                 painter = personPainter,
                 contentDescription = "Voice actor : ${voiceActor.person.name}",
-                modifier = customModifier
+                modifier = modifier
                     .size(85.dp, 135.dp),
                 contentScale = ContentScale.FillBounds
             )
@@ -270,14 +255,7 @@ private fun CurrentCast(
                 painter = characterPainter,
                 contentDescription = "Character name: ${data.character.name}",
                 modifier = Modifier
-                    .size(80.dp, 130.dp)
-                    .clickable {
-                        navController.navigate(route = "detail_on_character/${data.character.mal_id}") {
-                            popUpTo(Screen.Detail.route) {
-                                inclusive = true
-                            }
-                        }
-                    },
+                    .size(80.dp, 130.dp),
                 contentScale = ContentScale.Fit // Масштабирование изображения, чтобы вмещалось в квадрат
             )
         }

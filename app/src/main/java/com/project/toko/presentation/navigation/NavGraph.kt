@@ -17,7 +17,6 @@ import com.project.toko.presentation.screens.homeScreen.MainScreen
 import com.project.toko.presentation.screens.noId.NoId
 import com.project.toko.presentation.screens.detailScreen.sideContent.castList.ShowWholeCast
 import com.project.toko.presentation.screens.detailScreen.sideContent.staffList.ShowWholeStaff
-
 import com.project.toko.presentation.screens.favoritesScreen.FavoriteScreen
 
 @Composable
@@ -28,7 +27,6 @@ fun SetupNavGraph(
     dao: Dao
 
     ) {
-//    val dao = MainDb.getDb(LocalContext.current).getDao()
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(route = Screen.Home.route) {
             MainScreen(
@@ -55,7 +53,7 @@ fun SetupNavGraph(
             Log.d("CATCHED ID = ", id.toString())
         }
 
-        composable(route = Nothing.value) {
+        composable(route = Screen.Nothing.value) {
             NoId()
         }
         composable(route = Screen.Favorites.route) {
@@ -66,15 +64,15 @@ fun SetupNavGraph(
                 dao = dao
             )
         }
-        composable(route = DetailOnCast.value) {
+        composable(route =  Screen.DetailOnCast.value) {
             ShowWholeCast(
-                navController, viewModelProvider[DetailScreenViewModel::class.java],
+            viewModelProvider[DetailScreenViewModel::class.java],
                 modifier = modifier
             )
         }
-        composable(route = DetailOnStaff.value) {
+        composable(route =  Screen.DetailOnStaff.value) {
             ShowWholeStaff(
-                navController, viewModelProvider[DetailScreenViewModel::class.java],
+                viewModelProvider[DetailScreenViewModel::class.java],
                 modifier = modifier
             )
         }

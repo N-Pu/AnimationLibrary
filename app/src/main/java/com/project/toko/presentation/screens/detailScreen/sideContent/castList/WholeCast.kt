@@ -3,7 +3,6 @@ package com.project.toko.presentation.screens.detailScreen.sideContent.castList
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,19 +31,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.project.toko.domain.models.castModel.Character
 import com.project.toko.domain.models.castModel.Person
 import com.project.toko.domain.viewModel.DetailScreenViewModel
-import com.project.toko.presentation.navigation.DetailOnCast
-import com.project.toko.presentation.navigation.Screen
 import com.project.toko.presentation.theme.LightGreen
 
 
 @Composable
 fun ShowWholeCast(
-    navController: NavController,
     viewModel: DetailScreenViewModel,
     modifier: Modifier
 ) {
@@ -58,7 +53,6 @@ fun ShowWholeCast(
                 SingleCharacterMember(
                     character = data.character,
                     role = data.role,
-                    navController = navController,
                     modifier = modifier
                 )
                 Divider(modifier = modifier.size(10.dp))
@@ -71,7 +65,6 @@ fun ShowWholeCast(
                         SinglePersonMember(
                             person = voiceActor.person,
                             language = voiceActor.language,
-                            navController = navController,
                             modifier = modifier
                         )
                     }
@@ -93,7 +86,6 @@ fun ShowWholeCast(
 fun SingleCharacterMember(
     character: Character,
     role: String,
-    navController: NavController,
     modifier: Modifier
 ) {
     Card(
@@ -104,16 +96,7 @@ fun SingleCharacterMember(
                 shape = RoundedCornerShape(20.dp),
                 ambientColor = Color.Red,
                 spotColor = Color.Blue
-            )
-            .clickable {
-                navController.navigate("detail_on_character/${character.mal_id}") {
-                    launchSingleTop = true
-                    popUpTo(DetailOnCast.value) {
-                        saveState = true
-                    }
-                    restoreState = true
-                }
-            }, border = BorderStroke(width = 2.dp, LightGreen)
+            ), border = BorderStroke(width = 2.dp, LightGreen)
     ) {
         Box(modifier = modifier.background(LightGreen)) {
             Image(
@@ -146,19 +129,11 @@ fun SingleCharacterMember(
 fun SinglePersonMember(
     person: Person,
     language: String,
-    navController: NavController,
     modifier: Modifier
 ) {
 
     Card(modifier = modifier
-        .size(123.dp, 150.dp)
-        .clickable {
-            navController.navigate("detail_on_staff/${person.mal_id}") {
-                popUpTo(Screen.Detail.route) {
-                    inclusive = true
-                }
-            }
-        }) {
+        .size(123.dp, 150.dp)) {
         Box {
             Image(
                 painter = rememberAsyncImagePainter(person.images.jpg.image_url),

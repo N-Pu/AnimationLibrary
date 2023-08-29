@@ -1,15 +1,9 @@
 package com.project.toko.domain.viewModel
 
-import MalApiService
+import com.project.toko.repository.MalApiService
 import android.util.Log
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.toko.domain.models.cache.DataCacheSingleton
@@ -82,7 +76,6 @@ class HomeScreenViewModel(private val malApiRepository: MalApiService) : ViewMod
 
     private val _type = MutableStateFlow("")
     val type = _type.value
-
 
 
     private val _ratingList = MutableStateFlow(getRating())
@@ -166,7 +159,7 @@ class HomeScreenViewModel(private val malApiRepository: MalApiService) : ViewMod
     }
 
     // note: if you hit the"ok" button without tapping on genres - it will show you whole list of animes.
-    private suspend fun performSearch(query: String) {
+    private fun performSearch(query: String) {
         try {
             // This "if" statement is temporary added because
             // Jikan.Api isn't working properly with query that
@@ -177,7 +170,7 @@ class HomeScreenViewModel(private val malApiRepository: MalApiService) : ViewMod
 
             val response = malApiRepository.getAnimeSearchByName(
                 sfw = safeForWork.value,
-                nameOfAnime = query,
+                query = query,
                 page = currentPage.value,
                 genres = _genres.value,
                 rating = _selectedRating.value?.ratingName,
@@ -188,11 +181,9 @@ class HomeScreenViewModel(private val malApiRepository: MalApiService) : ViewMod
 
             )
 
-            if (response != null) {
-                homeScreenCaching(response.data)
-                hasNextPage.value = response.pagination.has_next_page
-                _animeSearch.value = response
-            }
+            homeScreenCaching(response.data)
+            hasNextPage.value = response.pagination.has_next_page
+            _animeSearch.value = response
 
 
         } catch (e: Exception) {
@@ -204,7 +195,6 @@ class HomeScreenViewModel(private val malApiRepository: MalApiService) : ViewMod
 
     fun loadNextPage() {
         val query = searchText.value
-
         if (!hasNextPage.value) {
             return
         }
@@ -215,7 +205,7 @@ class HomeScreenViewModel(private val malApiRepository: MalApiService) : ViewMod
                 val response =
                     malApiRepository.getAnimeSearchByName(
                         sfw = safeForWork.value,
-                        nameOfAnime = query,
+                        query = query,
                         page = nextPage,
                         genres = _genres.value,
                         rating = _selectedRating.value?.ratingName,
@@ -227,23 +217,16 @@ class HomeScreenViewModel(private val malApiRepository: MalApiService) : ViewMod
                     )
 
 
-//                viewModelScope.async {
-                if (response != null) {
-                    homeScreenCaching(response.data)
+                homeScreenCaching(response.data)
 
-                    hasNextPage.value = response.pagination.has_next_page
+                hasNextPage.value = response.pagination.has_next_page
 
-                }
-//                }.await()
-
-//                viewModelScope.async {
-                response?.let { newAnimeSearchModel ->
+                response.let { newAnimeSearchModel ->
                     _animeSearch.value =
                         _animeSearch.value.copy(data = _animeSearch.value.data + newAnimeSearchModel.data)
                     _currentPage.value = nextPage
                     _isNextPageLoading.value = newAnimeSearchModel.pagination.has_next_page
                 }
-//                }.await()
 
             } catch (e: Exception) {
                 Log.e("HomeScreenViewModel", "Failed to load next page: ${e.message}")
@@ -308,11 +291,7 @@ class HomeScreenViewModel(private val malApiRepository: MalApiService) : ViewMod
 
     }
 
-
     //------------------------------------------------------
-
-
-
     private fun homeScreenCaching(list: List<Data>) {
         list.forEachIndexed { _, data ->
             if (animeCache.containsId(data.mal_id).not()) {
@@ -320,15 +299,6 @@ class HomeScreenViewModel(private val malApiRepository: MalApiService) : ViewMod
             }
         }
     }
-
-
-
-//    private val addedAnime = MutableStateFlow())
-//    val selectedGenre: MutableStateFlow<List<Genre>> = preSelectedGenre
-
-    var selectedIcon by mutableStateOf(Icons.Default.AddCircle)
-
-
 }
 
 

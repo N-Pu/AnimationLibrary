@@ -1,6 +1,6 @@
 package com.project.toko.domain.viewModel
 
-import MalApiService
+import com.project.toko.repository.MalApiService
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -59,7 +59,7 @@ class DetailScreenViewModel(private val malApiService: MalApiService) :
         MutableStateFlow<List<com.project.toko.domain.models.staffModel.Data>>(emptyList())
     val staffList = _staffList.asStateFlow()
 
-    suspend fun addStaffFromId(id: Int) {
+     fun addStaffFromId(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val cachedStaff = staffCache[id]
             if (cachedStaff != null) {
@@ -92,27 +92,26 @@ class DetailScreenViewModel(private val malApiService: MalApiService) :
         MutableStateFlow<List<com.project.toko.domain.models.castModel.Data>>(emptyList())
     val castList = _castList.asStateFlow()
 
-    suspend fun addCastFromId(id: Int) {
+     fun addCastFromId(id: Int) {
         val cachedCharacters = castCache[id]
         if (cachedCharacters != null) {
             _castList.value = cachedCharacters
             return
         }
 
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    val response = malApiService.getCharactersFromId(id)
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = malApiService.getCharactersFromId(id)
 
-                    val characters = response.data
-                    castCache[id] = characters
-                    _castList.value = characters
-                } catch (e: Exception) {
-                    Log.e("CastInDetailScreenVM", e.message.toString())
-                    // если произошла ошибка, присваиваем пустой список
-                    _castList.value = emptyList()
-                }
+                val characters = response.data
+                castCache[id] = characters
+                _castList.value = characters
+            } catch (e: Exception) {
+                Log.e("CastInDetailScreenVM", e.message.toString())
+                // если произошла ошибка, присваиваем пустой список
+                _castList.value = emptyList()
             }
+
         }
     }
 }

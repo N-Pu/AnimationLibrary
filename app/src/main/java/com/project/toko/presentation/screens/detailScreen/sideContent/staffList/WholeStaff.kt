@@ -5,7 +5,6 @@ import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,16 +27,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.project.toko.domain.models.staffModel.Person
 import com.project.toko.domain.viewModel.DetailScreenViewModel
-import com.project.toko.presentation.navigation.Screen
 
 
 @Composable
 fun ShowWholeStaff(
-    navController: NavController,
+
     viewModel: DetailScreenViewModel,
     modifier: Modifier
 ) {
@@ -53,7 +50,7 @@ fun ShowWholeStaff(
             SingleStaffMember(
                 person = data.person,
                 positions = data.positions,
-                navController = navController, modifier = modifier
+                modifier = modifier
             )
         }
         item { Spacer(modifier = modifier.height(50.dp)) }
@@ -67,7 +64,7 @@ fun ShowWholeStaff(
 fun SingleStaffMember(
     person: Person,
     positions: List<String>,
-    navController: NavController,
+
     modifier: Modifier
 ) {
 
@@ -86,14 +83,7 @@ fun SingleStaffMember(
         )
     ) {
 
-        Card(modifier = modifier
-            .clickable {
-                navController.navigate(route = "detail_on_staff/${person.mal_id}") {
-                    popUpTo(Screen.Detail.route) {
-                        inclusive = true
-                    }
-                }
-            }) {
+        Card(modifier = modifier) {
             Row {
                 Column {
                     Image(

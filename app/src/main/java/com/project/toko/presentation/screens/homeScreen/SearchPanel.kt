@@ -46,8 +46,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(
-    navController: NavHostController, viewModelProvider: ViewModelProvider,
-    modifier: Modifier, dao: Dao
+    navController: NavHostController,
+    viewModelProvider: ViewModelProvider,
+    modifier: Modifier,
+    dao: Dao
 ) {
     val viewModel = viewModelProvider[HomeScreenViewModel::class.java]
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
@@ -429,10 +431,8 @@ private fun AddAllButton(
         Button(
             onClick = {
                 viewModel.viewModelScope.launch(Dispatchers.IO) {
-
                     viewModel.addAllParams()
                     isDropdownVisible.value = false
-
                 }
             },
             modifier = modifier.align(Alignment.BottomCenter)

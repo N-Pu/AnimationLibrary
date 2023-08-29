@@ -21,10 +21,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.project.toko.dao.MainDb
 import com.project.toko.domain.models.cache.DataCacheSingleton
-import com.project.toko.presentation.appConstraction.TokoAppActivator
+import com.project.toko.presentation.appConstraction.AppActivator
 import com.project.toko.presentation.theme.TokoTheme
 import com.project.toko.presentation.theme.LightGreen
 import com.project.toko.domain.viewModel.viewModelFactory.MyViewModelFactory
+import com.project.toko.repository.MalApiService
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -55,7 +56,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = modifier.fillMaxSize(),
                 ) {
-                    TokoAppActivator(
+                    AppActivator(
                         navController = navController,
                         viewModelProvider = viewModelProvider,
                         modifier = modifier,

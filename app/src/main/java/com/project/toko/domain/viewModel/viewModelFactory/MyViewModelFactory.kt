@@ -1,6 +1,6 @@
 package com.project.toko.domain.viewModel.viewModelFactory
 
-import MalApiService
+import com.project.toko.repository.MalApiService
 import com.project.toko.domain.viewModel.HomeScreenViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

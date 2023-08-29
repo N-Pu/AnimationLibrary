@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -33,14 +32,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.project.toko.dao.Dao
 import com.project.toko.domain.viewModel.DetailScreenViewModel
-import com.project.toko.presentation.navigation.Nothing
 import com.project.toko.presentation.navigation.Screen
 import com.project.toko.presentation.navigation.SetupNavGraph
 import com.project.toko.presentation.theme.LightGreen
 
 
 @Composable
-fun TokoAppActivator(
+fun AppActivator(
     navController: NavHostController,
     viewModelProvider: ViewModelProvider,
     modifier: Modifier,
@@ -49,10 +47,8 @@ fun TokoAppActivator(
 
     val currentDetailScreenId = viewModelProvider[DetailScreenViewModel::class.java].loadedId
     navController.addOnDestinationChangedListener { _, destination, arguments ->
-        when (destination.route) {
-            Screen.Detail.route -> {
-                currentDetailScreenId.value = arguments?.getInt("id") ?: 0
-            }
+        if (destination.route == Screen.Detail.route) {
+            currentDetailScreenId.value = arguments?.getInt("id") ?: 0
         }
     }
 
@@ -80,12 +76,13 @@ fun TokoAppActivator(
 
         }
     },
-        floatingActionButtonPosition = FabPosition.Center,
         content = { padding ->
             padding.calculateTopPadding()
             SetupNavGraph(
-                navController = navController, viewModelProvider = viewModelProvider,
-                modifier = modifier, dao = dao
+                navController = navController,
+                viewModelProvider = viewModelProvider,
+                modifier = modifier,
+                dao = dao
             )
         }
     )
@@ -93,7 +90,7 @@ fun TokoAppActivator(
 
 
 @Composable
-fun BottomNavigationBar(
+private fun BottomNavigationBar(
     navController: NavController,
     currentDetailScreenId: MutableState<Int>,
     modifier: Modifier,
@@ -104,6 +101,7 @@ fun BottomNavigationBar(
     val items = listOf(
         Screen.Home, Screen.Detail, Screen.Favorites
     )
+
     val isDaoEmpty by dao.isDataBaseEmpty().collectAsStateWithLifecycle(initialValue = false)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -175,7 +173,7 @@ fun BottomNavigationBar(
                                     }
                                 }
                             } else {
-                                navController.navigate(Nothing.value) {
+                                navController.navigate(Screen.Nothing.value) {
                                     launchSingleTop = true
                                 }
                             }

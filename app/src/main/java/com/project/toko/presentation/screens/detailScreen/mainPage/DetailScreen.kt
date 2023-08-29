@@ -774,7 +774,7 @@ private fun YearTypeEpisodesTimeStatusStudio(data: Data?, modifier: Modifier) {
     val isStudioEmpty = data?.studios.isNullOrEmpty()
     Column(
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.Start,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .padding(start = 20.dp, top = 5.dp, bottom = 0.dp, end = 20.dp)
             .fillMaxWidth(1f)
