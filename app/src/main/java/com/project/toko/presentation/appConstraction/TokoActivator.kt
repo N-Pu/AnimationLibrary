@@ -30,8 +30,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.project.toko.dao.Dao
-import com.project.toko.domain.viewModel.DetailScreenViewModel
+import com.project.toko.presentation.screens.favoritesScreen.vm.DaoViewModel
+import com.project.toko.presentation.screens.detailScreen.vm.DetailScreenViewModel
 import com.project.toko.presentation.navigation.Screen
 import com.project.toko.presentation.navigation.SetupNavGraph
 import com.project.toko.presentation.theme.LightGreen
@@ -41,8 +41,7 @@ import com.project.toko.presentation.theme.LightGreen
 fun AppActivator(
     navController: NavHostController,
     viewModelProvider: ViewModelProvider,
-    modifier: Modifier,
-    dao: Dao
+    modifier: Modifier
 ) {
 
     val currentDetailScreenId = viewModelProvider[DetailScreenViewModel::class.java].loadedId
@@ -68,7 +67,7 @@ fun AppActivator(
                     navController = navController,
                     currentDetailScreenId = currentDetailScreenId,
                     modifier = modifier,
-                    dao = dao
+                    viewModelProvider = viewModelProvider,
                 )
 
             }
@@ -81,8 +80,7 @@ fun AppActivator(
             SetupNavGraph(
                 navController = navController,
                 viewModelProvider = viewModelProvider,
-                modifier = modifier,
-                dao = dao
+                modifier = modifier
             )
         }
     )
@@ -94,15 +92,13 @@ private fun BottomNavigationBar(
     navController: NavController,
     currentDetailScreenId: MutableState<Int>,
     modifier: Modifier,
-    dao: Dao
+    viewModelProvider: ViewModelProvider
 ) {
 
-
-    val items = listOf(
-        Screen.Home, Screen.Detail, Screen.Favorites
-    )
-
-    val isDaoEmpty by dao.isDataBaseEmpty().collectAsStateWithLifecycle(initialValue = false)
+    val isDaoEmpty by viewModelProvider[DaoViewModel::class.java].isDataBaseEmpty()
+        .collectAsStateWithLifecycle(
+            initialValue = false
+        )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -121,7 +117,7 @@ private fun BottomNavigationBar(
     ) {
 
         if (currentRoute != null) {
-            Log.d("currentRoute", currentRoute + "==" + items[0].route)
+            Log.d("currentRoute", currentRoute + "==" + Screen.Home.route)
         }
 
         Column(
@@ -130,13 +126,13 @@ private fun BottomNavigationBar(
             modifier = modifier.padding(horizontal = 10.dp, vertical = 10.dp)
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(id = items[0].iconId),
-                contentDescription = items[0].contentDescription,
+                imageVector = ImageVector.vectorResource(id = Screen.Home.iconId),
+                contentDescription = Screen.Home.contentDescription,
                 modifier = modifier
                     .size(30.dp)
                     .clickable {
                         try {
-                            navController.navigate(items[0].route) {
+                            navController.navigate(Screen.Home.route) {
 
                                 // Avoid multiple copies of the same destination when
                                 // reselecting the same item
@@ -148,7 +144,7 @@ private fun BottomNavigationBar(
                             }
                         } catch (e: IllegalArgumentException) {
 
-                            Log.e("CATCH", items[0].route + " " + e.message.toString())
+                            Log.e("CATCH", Screen.Home.route + " " + e.message.toString())
 
                         }
                     }
@@ -160,8 +156,8 @@ private fun BottomNavigationBar(
             modifier = modifier.padding(horizontal = 10.dp, vertical = 0.dp)
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(id = items[1].iconId),
-                contentDescription = items[1].contentDescription,
+                imageVector = ImageVector.vectorResource(id = Screen.Detail.iconId),
+                contentDescription = Screen.Detail.contentDescription,
                 modifier = modifier
                     .size(30.dp)
                     .clickable {
@@ -179,7 +175,7 @@ private fun BottomNavigationBar(
                             }
 
                         } catch (e: IllegalArgumentException) {
-                            Log.e("CATCH", items[1].route + " " + e.message.toString())
+                            Log.e("CATCH", Screen.Detail.route + " " + e.message.toString())
                         }
                     }
             )
@@ -193,13 +189,13 @@ private fun BottomNavigationBar(
                 modifier = modifier.padding(horizontal = 10.dp, vertical = 0.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = items[2].iconId),
-                    contentDescription = items[2].contentDescription,
+                    imageVector = ImageVector.vectorResource(id = Screen.Favorites.iconId),
+                    contentDescription = Screen.Favorites.contentDescription,
                     modifier = modifier
                         .size(30.dp)
                         .clickable {
                             try {
-                                navController.navigate(items[2].route) {
+                                navController.navigate(Screen.Favorites.route) {
 
                                     // Avoid multiple copies of the same destination when
                                     // reselecting the same item
@@ -211,7 +207,7 @@ private fun BottomNavigationBar(
                                 }
                             } catch (e: IllegalArgumentException) {
 
-                                Log.e("CATCH", items[2].route + " " + e.message.toString())
+                                Log.e("CATCH", Screen.Favorites.route + " " + e.message.toString())
 
                             }
                         }

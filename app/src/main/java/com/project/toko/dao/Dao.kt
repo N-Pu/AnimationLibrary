@@ -12,15 +12,16 @@ interface Dao {
 
     // Функция для добавления аниме в категорию
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addToFavorites(animeItem: AnimeItem)
+    suspend fun addToFavorites(animeItem: AnimeItem)
 
     @Query("SELECT NOT EXISTS (SELECT 1 FROM animeItems LIMIT 1)")
     fun isDataBaseEmpty(): Flow<Boolean>
+
     @Query("DELETE FROM animeItems WHERE id = :id")
-    fun removeFromDataBase(id: Int)
+    suspend fun removeFromDataBase(id: Int)
 
     @Query("DELETE FROM animeItems")
-    fun removeAll()
+    suspend fun removeAll()
 
     // Функция для проверки наличия ID в базе данных
     @Query("SELECT EXISTS(SELECT 1 FROM animeItems WHERE id = :id LIMIT 1)")

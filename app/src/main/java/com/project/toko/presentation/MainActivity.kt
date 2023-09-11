@@ -19,22 +19,24 @@ import androidx.core.view.doOnLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.project.toko.dao.MainDb
 import com.project.toko.domain.models.cache.DataCacheSingleton
 import com.project.toko.presentation.appConstraction.AppActivator
 import com.project.toko.presentation.theme.TokoTheme
 import com.project.toko.presentation.theme.LightGreen
 import com.project.toko.domain.viewModel.viewModelFactory.MyViewModelFactory
 import com.project.toko.repository.MalApiService
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class MainActivity : ComponentActivity() {
+@AndroidEntryPoint
+class MainActivity @Inject constructor() : ComponentActivity() {
 
-
-    private lateinit var navController: NavHostController
-    private var modifier: Modifier = Modifier
+//    @Inject
+    lateinit var navController: NavHostController
+    private val modifier: Modifier = Modifier
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -45,9 +47,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             HideStatusBar()
             val myViewModelFactory =
-                MyViewModelFactory(malApiRepository = MalApiService.instance)
+                MyViewModelFactory(malApiRepository = MalApiService.instance, context = this)
             val viewModelProvider = ViewModelProvider(this, myViewModelFactory)
-            val dao = MainDb.getDb(this).getDao()
             navController = rememberNavController()
 
             TokoTheme {
@@ -59,8 +60,7 @@ class MainActivity : ComponentActivity() {
                     AppActivator(
                         navController = navController,
                         viewModelProvider = viewModelProvider,
-                        modifier = modifier,
-                        dao = dao
+                        modifier = modifier
                     )
                 }
             }

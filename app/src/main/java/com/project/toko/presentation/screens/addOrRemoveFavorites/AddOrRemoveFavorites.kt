@@ -15,15 +15,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.project.toko.dao.AnimeItem
-import com.project.toko.dao.Dao
+import com.project.toko.presentation.screens.favoritesScreen.vm.DaoViewModel
 import com.project.toko.presentation.theme.LightGreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 
 
 // Функция для добавления или удаления
@@ -37,14 +36,17 @@ fun AddOrRemoveFavorites(
     scoredBy: String,
     animeImage: String,
     modifier: Modifier,
-    viewModel: ViewModel,
-    dao: Dao
+    viewModelProvider: ViewModelProvider,
 ) {
     val addCircle = Icons.Default.AddCircle
     val check = Icons.Default.Check
 
     var isAnimeInDb by remember { mutableStateOf(false) }
-    val containsInDao by dao.containsInDataBase(mal_id).collectAsStateWithLifecycle(false)
+    val vm = viewModelProvider[DaoViewModel::class.java]
+    val containsInDao by vm.containsInDataBase(mal_id)
+        .collectAsStateWithLifecycle(
+            initialValue = false
+        )
 
     // Update the icon based on whether the anime is in the database or not
     isAnimeInDb = containsInDao
@@ -58,11 +60,11 @@ fun AddOrRemoveFavorites(
         ) {
             IconButton(
                 onClick = {
-                    viewModel.viewModelScope.launch(Dispatchers.IO) {
+                    vm.viewModelScope.launch(Dispatchers.IO) {
                         if (containsInDao) {
-                            dao.removeFromDataBase(mal_id)
+                            vm.removeFromDataBase(mal_id)
                         } else {
-                            dao.addToFavorites(
+                            vm.addToFavorites(
                                 AnimeItem(
                                     mal_id,
                                     anime = anime,

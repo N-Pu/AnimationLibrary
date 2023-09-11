@@ -32,8 +32,8 @@ fun NoId() {
                 .clip(CardDefaults.shape)
                 .background(
                     LightGreen
-                ).
-                    padding(20.dp, 20.dp, 20.dp, 20.dp)
+                )
+                .padding(20.dp, 20.dp, 20.dp, 20.dp)
         ) {
             Text(
                 text = "No ID", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White

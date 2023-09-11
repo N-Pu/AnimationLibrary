@@ -10,29 +10,26 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.project.toko.dao.Dao
-import com.project.toko.domain.viewModel.DetailScreenViewModel
-import com.project.toko.presentation.screens.detailScreen.mainPage.ActivateDetailScreen
-import com.project.toko.presentation.screens.homeScreen.MainScreen
+import com.project.toko.presentation.screens.detailScreen.vm.DetailScreenViewModel
+import com.project.toko.presentation.screens.detailScreen.ui.mainPage.ActivateDetailScreen
+import com.project.toko.presentation.screens.homeScreen.ui.MainScreen
 import com.project.toko.presentation.screens.noId.NoId
-import com.project.toko.presentation.screens.detailScreen.sideContent.castList.ShowWholeCast
-import com.project.toko.presentation.screens.detailScreen.sideContent.staffList.ShowWholeStaff
-import com.project.toko.presentation.screens.favoritesScreen.FavoriteScreen
+import com.project.toko.presentation.screens.detailScreen.ui.sideContent.castList.ShowWholeCast
+import com.project.toko.presentation.screens.detailScreen.ui.sideContent.staffList.ShowWholeStaff
+import com.project.toko.presentation.screens.favoritesScreen.ui.FavoriteScreen
 
 @Composable
 fun SetupNavGraph(
     navController: NavHostController,
     viewModelProvider: ViewModelProvider,
-    modifier: Modifier,
-    dao: Dao
+    modifier: Modifier
     ) {
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(route = Screen.Home.route) {
             MainScreen(
                 navController = navController,
                 viewModelProvider = viewModelProvider,
-                modifier = modifier,
-                dao = dao
+                modifier = modifier
             )
         }
         composable(
@@ -46,8 +43,7 @@ fun SetupNavGraph(
                 navController = navController,
                 viewModelProvider = viewModelProvider,
                 id = id,
-                modifier = modifier,
-                dao = dao
+                modifier = modifier
             )
             Log.d("CATCHED ID = ", id.toString())
         }
@@ -59,8 +55,7 @@ fun SetupNavGraph(
             FavoriteScreen(
                 navController = navController,
                 viewModelProvider = viewModelProvider,
-                modifier = modifier,
-                dao = dao
+                modifier = modifier
             )
         }
         composable(route =  Screen.DetailOnCast.value) {
